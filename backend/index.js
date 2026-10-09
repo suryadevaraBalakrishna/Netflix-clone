@@ -1,35 +1,42 @@
-const express=require("express");
-const mongoose=require("mongoose");
-const server=express();
-require('dotenv').config();
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
-
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-// parse requests of content-type - application/json
-server.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-server.use(express.urlencoded({ extended: true }));
-
-server.use(bodyParser.json());
+const server = express();
 
 server.use(cors());
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 
-server.get('/',(request,response)=>{
-    response.send('serever is running');
-})
+server.get("/", (request, response) => {
+  response.send("Server is running");
+});
+
+server.get("/favicon.ico", (request, response) => {
+  response.status(204).end();
+});
 
 require("./routes/user.routes")(server);
 
+// Connect to MongoDB
+mongoose
+  .connect(process.env.DB)
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((error) => {
+    console.error("Database connection error:", error);
+  });
 
-server.listen(process.env.PORT,()=>{
-    mongoose.connect(process.env.DB)
-    .then(()=>{
-        console.log('Database connected');
-    }).catch((error)=>{
-        console.log(error);
-    })
-})
+// Export the app for Vercel
+module.exports = server;
 
+// Run locally only
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+
+  server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
