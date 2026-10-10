@@ -59,9 +59,3 @@ npm run dev
 - Integrating REST APIs
 - Connecting frontend and backend services
 - Deploying applications using Vercel
-
-## 👨‍💻 Author
-
-**Balakrishna Suryadevara**
-
-GitHub: Add your GitHub profile URL here.
