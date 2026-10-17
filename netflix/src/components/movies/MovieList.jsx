@@ -1,7 +1,7 @@
 import React from 'react'
 import MovieCard from './MovieCard'
 
-export default function MovieList({ title, movies }) {
+export default function MovieList({ title, movies ,onMovieClick}) {
   return (
     <div className="my-5">
 
@@ -17,6 +17,7 @@ export default function MovieList({ title, movies }) {
             poster_path={`${import.meta.env.VITE_BASE_URL}${items.poster_path}`}
             vote_average={items.vote_average}
             overview={items.overview}
+            onClick={() => onMovieClick?.(items)}
           />
         ))}
       </div>

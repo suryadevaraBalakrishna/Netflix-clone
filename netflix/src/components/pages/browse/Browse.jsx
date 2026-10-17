@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import useNowPlayingMovies from '../../../hooks/useNowPlayingMovies'
 import usePopularMovies from '../../../hooks/usePopularMovies'
 import useTopRateMovies from '../../../hooks/useTopRatedMovies'
 import useUpcomingMovies from '../../../hooks/useUpcomingMovies'
 import MovieList from '../../movies/MovieList'
 import { useSelector } from 'react-redux'
+import Video from '../../videos/Video'
+import MoviePopup from '../../movies/MoviePopup';
+import useMovieById from '../../../hooks/useMovieById';
 
 
 export default function Browse() {
@@ -15,11 +18,36 @@ export default function Browse() {
 
   const movie = useSelector((state) => state.movie)
 
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useMovieById(selectedMovie?.id);
+
+const trailer = useSelector(
+  (state) => state.movie.trailerMovies
+);
+
+const handleMovieClick = (movie) => {
+  setSelectedMovie(movie);
+};
+
+
+ const [playingMovie, setPlayingMovie] = useState(null);
+
+useEffect(() => {
+  if (movie.nowPlayingMovies?.length > 0) {
+    const movies = movie.nowPlayingMovies;
+
+    const randomIndex = Math.floor(Math.random() * movies.length);
+
+    setPlayingMovie(movies[randomIndex]);
+  }
+}, [movie.nowPlayingMovies]);
+
   
   return (
     <>
 
-    <div class="relative min-h-[300px] bg-black">
+    {/* <div class="relative min-h-[300px] bg-black">
         <div class="absolute inset-0">
           <img
             alt="Netflix background"
@@ -28,30 +56,42 @@ export default function Browse() {
           />
         </div>
         <div class="absolute inset-0 bg-black/80"></div>
-      </div>
-      
+      </div> */}
+
+      <Video title={playingMovie?.title} overview={playingMovie?.overview} id={playingMovie?.id}/>
+
 
 
       <div>
         <MovieList
           title="Popular Movies"
           movies={movie.PopularMovies}
+         onMovieClick={handleMovieClick}
         />
 
         <MovieList
           title="Upcoming Movies"
           movies={movie.UpcomingMovies}
+            onMovieClick={handleMovieClick}
         />
 
         <MovieList
           title="Now Playing Movies"
           movies={movie.nowPlayingMovies}
+           onMovieClick={handleMovieClick}
         />
 
         <MovieList
           title="Top Rated Movies"
           movies={movie.TopRatedMovies}
+           onMovieClick={handleMovieClick}
         />
+
+        <MoviePopup
+  movie={selectedMovie}
+  trailer={trailer}
+  onClose={() => setSelectedMovie(null)}
+/>
       </div>
     </>
   )

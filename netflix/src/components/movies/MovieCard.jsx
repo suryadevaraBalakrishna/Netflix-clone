@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default function MovieCard({ original_title, poster_path, vote_average, overview }) {
+export default function MovieCard({ original_title, poster_path, vote_average, overview, onClick }) {
   return (
-    <div className="w-[180px] flex-shrink-0 overflow-hidden rounded-md bg-black">
-
+   <div
+   onClick={onClick}
+  className="w-[180px] flex-shrink-0 overflow-hidden rounded-md bg-black text-left"
+>
       {/* Poster */}
       <img
         src={poster_path}

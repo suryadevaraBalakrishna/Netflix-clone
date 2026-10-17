@@ -52,6 +52,11 @@ export default function Header() {
               Browse
               </Link>
             </button>
+             <button className="flex items-center gap-1  rounded bg-[#e50914] px-2.5 py-1.5 text-sm text-white sm:px-3 sm:py-2">
+              <Link to="/search">
+              Search Movie
+              </Link>
+            </button>
               <button className="flex items-center gap-1  rounded bg-[#e50914] px-2.5 py-1.5 text-sm text-white sm:px-3 sm:py-2">
               <Link to="/account">
               My Account

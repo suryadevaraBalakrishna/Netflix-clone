@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import PublicRoute from './components/common/PublicRoute'
 import Browse from './components/pages/browse/Browse'
+import SearchMovie from './components/pages/search-movie/SearchMovie'
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<Account />} />
           <Route path='/browse' element={<Browse/>}/>
+          <Route path='/search' element={<SearchMovie/>}/>
         </Route>
 
       </Routes>
