@@ -20,10 +20,10 @@ export default function Browse() {
 
   const [selectedMovie, setSelectedMovie] = useState(null);
 
-  useMovieById(selectedMovie?.id);
+useMovieById(selectedMovie?.id, "popup");
 
 const trailer = useSelector(
-  (state) => state.movie.trailerMovies
+    (state) => state.movie.popupTrailer
 );
 
 const handleMovieClick = (movie) => {

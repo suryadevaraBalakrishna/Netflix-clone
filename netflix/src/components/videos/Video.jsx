@@ -6,9 +6,12 @@ export default function Video({ title, overview, id }) {
 
     useMovieById(id);
 
-    const trailer = useSelector((state) => state.movie.trailerMovies);
-    console.log(trailer?.key);
 
+
+
+    const trailer = useSelector(
+    (state) => state.movie.heroTrailer
+);
 
 
     return (

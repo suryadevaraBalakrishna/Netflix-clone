@@ -1,12 +1,24 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { gettrailerMovies } from '../slice/MovieSlice';
+import {
+    getHeroTrailer,
+    getPopupTrailer
+} from '../slice/MovieSlice';
 
-export default function useMovieById(id) {
+export default function useMovieById(id, type = "hero") {
     const dispatch = useDispatch();
+
     useEffect(() => {
-        if (!id) return;
+        const setTrailer =
+            type === "popup" ? getPopupTrailer : getHeroTrailer;
+
+        if (!id) {
+            dispatch(setTrailer(null));
+            return;
+        }
+
+        dispatch(setTrailer(null));
 
         axios
             .get(
@@ -18,13 +30,28 @@ export default function useMovieById(id) {
                 }
             )
             .then((result) => {
-                const trailer = result?.data?.results?.filter((items) => {
-                    return items.type == "Trailer"
-                })
-                dispatch(gettrailerMovies(trailer.length > 0 ? trailer[0] : result.data.results[0]));
+                const videos = result?.data?.results || [];
+
+                const trailer =
+                    videos.find(
+                        (item) =>
+                            item.site === "YouTube" &&
+                            item.type === "Trailer" &&
+                            item.official
+                    ) ||
+                    videos.find(
+                        (item) =>
+                            item.site === "YouTube" &&
+                            item.type === "Trailer"
+                    ) ||
+                    videos.find((item) => item.site === "YouTube") ||
+                    null;
+
+                dispatch(setTrailer(trailer));
             })
             .catch((error) => {
                 console.log(error);
+                dispatch(setTrailer(null));
             });
-    }, [id]);
+    }, [id, type, dispatch]);
 }
